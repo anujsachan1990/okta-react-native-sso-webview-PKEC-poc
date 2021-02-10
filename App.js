@@ -107,7 +107,7 @@ const App = () => {
           contentInsetAdjustmentBehavior="automatic"
           style={styles.scrollView}>
           {!accessToken && !idToken && (
-            <Button title="Login in" onPress={toggleModal} />
+            <Button title="Login" onPress={toggleModal} />
           )}
 
           {!!accessToken && !!idToken && (
