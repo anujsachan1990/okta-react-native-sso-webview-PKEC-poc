@@ -6,9 +6,18 @@ import {
   Text,
   View,
   Button,
+  Platform,
 } from 'react-native';
 
+import {InAppBrowser} from 'react-native-inappbrowser-reborn';
+
 import ModalBrowser from './Modal';
+
+const getDeepLink = (path = '') => {
+  const scheme = 'poc';
+  const prefix = `${scheme}://`;
+  return prefix + path;
+};
 
 const gup = (name, url) => {
   name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
@@ -55,12 +64,20 @@ const App = () => {
         client_id: '0oa54jk8kqn7DfAqV5d6',
         code_verifier:
           'M25iVXpKU3puUjFaYWg3T1NDTDQtcW1ROUY5YXlwalNoc0hhakxifmZHag',
-        redirect_uri: 'https://okta-cli-react-webapp.vercel.app',
+        redirect_uri: 'poc://https://okta-cli-react-webapp.vercel.app',
         grant_type: 'authorization_code',
         code,
         state,
       };
-      console.log();
+      console.log('code', code);
+      console.log('state', state);
+
+      // InAppBrowser.openAuth(`https://okta-cli-react-webapp.vercel.app`).then(
+      //   (res) => {
+      //     console.log('res', res);
+      //   },
+      // );
+
       if (!accessToken && !idToken && !refreshToken) {
         const searchParams = Object.keys(details)
           .map((key) => {
@@ -107,7 +124,37 @@ const App = () => {
           contentInsetAdjustmentBehavior="automatic"
           style={styles.scrollView}>
           {!accessToken && !idToken && (
-            <Button title="Login" onPress={toggleModal} />
+            // <Button title="Login" onPress={toggleModal} />
+            <Button
+              title="Login"
+              onPress={async () => {
+                const loginUrl = `https://dev-3976672.okta.com/oauth2/default/v1/authorize?client_id=0oa54jk8kqn7DfAqV5d6&response_type=code&scope=openid%20offline_access&redirect_uri=poc://https://okta-cli-react-webapp.vercel.app&state=237c671a-29d7-11eb-adc1-0242ac120002&code_challenge_method=S256&code_challenge=qjrzSW9gMiUgpUvqgEPE4_-8swvyCtfOVvg55o5S_es`;
+                const redirectUrl = getDeepLink();
+                const url = `${loginUrl}?redirect_url=${encodeURIComponent(
+                  redirectUrl,
+                )}`;
+                try {
+                  if (await InAppBrowser.isAvailable()) {
+                    const result = await InAppBrowser.openAuth(url);
+                    const webViewState = {
+                      url: result.url,
+                    };
+                    onNavigationStateChange(webViewState);
+                    console.log(result);
+                  } else {
+                    alert('InAppBrowser is not supported :/');
+                  }
+                } catch (error) {
+                  console.error(error);
+                  alert('Something’s wrong with the app :(');
+                }
+
+                // https://dev-3976672.okta.com/oauth2/default/v1/authorize?client_id=0oa54jk8kqn7DfAqV5d6&response_type=code&scope=openid%20offline_access&redirect_uri=poc://okta-cli-react-webapp.vercel.app
+                // InAppBrowser.openAuth(
+                //   `https://dev-3976672.okta.com/oauth2/default/v1/authorize?client_id=0oa54jk8kqn7DfAqV5d6&response_type=code&scope=openid%20offline_access&redirect_uri=https://okta-cli-react-webapp.vercel.app&state=237c671a-29d7-11eb-adc1-0242ac120002&code_challenge_method=S256&code_challenge=qjrzSW9gMiUgpUvqgEPE4_-8swvyCtfOVvg55o5S_es`,
+                // );
+              }}
+            />
           )}
 
           {!!accessToken && !!idToken && (
