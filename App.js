@@ -159,6 +159,7 @@ const App = () => {
           // uri={'https://oktapoc.herokuapp.com/dashboard'}
           isModalVisible={hasOpenPortal}
           toggleModal={togglePortalLink}
+          idToken={idToken}
         />
 
         <ModalBrowser
