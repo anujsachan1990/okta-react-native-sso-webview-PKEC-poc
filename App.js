@@ -160,6 +160,7 @@ const App = () => {
           isModalVisible={hasOpenPortal}
           toggleModal={togglePortalLink}
           idToken={idToken}
+          onMessage={onMessage}
         />
 
         <ModalBrowser
