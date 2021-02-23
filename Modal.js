@@ -12,28 +12,37 @@ let webViewRef = createRef();
 // window.ReactNativeWebView.postMessage(window.sessionStorage.setItem('sessionToken','qwdqwdwqdqwdq'));
 // `;
 
-const injectTokenfunc = (idToken, accessToken) =>
-  `setTimeout(()=>{
-    const getSessionToken = JSON.parse(window.sessionStorage.getItem('persist:MOL_STORAGE'));
-    const test = {
-      ...JSON.parse(window.sessionStorage.getItem('persist:MOL_STORAGE')),
-      ui: {
-    authorization: {
-     accessToken:'${accessToken}',
-          idToken:'${idToken}'
-            }
-        }
-    };
-    const setSessionToken = window.sessionStorage.setItem('persist:MOL_STORAGE', JSON.stringify(test));
-  const getSessionToken1 = window.sessionStorage.getItem('persist:MOL_STORAGE');
-  window.ReactNativeWebView.postMessage(getSessionToken1);
-  },2000)
-  `;
+// const injectTokenfunc = (idToken, accessToken) =>
+//   `setTimeout(()=>{
+//     const getSessionToken = JSON.parse(window.sessionStorage.getItem('persist:MOL_STORAGE'));
+//     const test = {
+//       ...JSON.parse(window.sessionStorage.getItem('persist:MOL_STORAGE')),
+//       ui: {
+//     authorization: {
+//      accessToken:'${accessToken}',
+//           idToken:'${idToken}'
+//             }
+//         }
+//     };
+//     const setSessionToken = window.sessionStorage.setItem('persist:MOL_STORAGE', JSON.stringify(test));
+//   const getSessionToken1 = window.sessionStorage.getItem('persist:MOL_STORAGE');
+//   window.ReactNativeWebView.postMessage(getSessionToken1);
+//   },2000)
+//   `;
 
-// const injectTokenfunc = (idToken) =>
-//   `const setSessionToken = window.sessionStorage.setItem('sessionToken','${idToken}');
-//   const getSessionToken = window.sessionStorage.getItem('sessionToken');
-//   window.ReactNativeWebView.postMessage(getSessionToken);`;
+const injectTokenfunc = (idToken, accessToken) =>
+  `
+  const setSessionToken = window.sessionStorage.setItem('sessionToken','${idToken}');
+  const getSessionToken = window.sessionStorage.getItem('sessionToken');
+  window.ReactNativeWebView.postMessage(getSessionToken);
+  setTimeout(()=>{
+    const event = new window.CustomEvent('tokenEvent', {
+      detail: { idToken: '${idToken}' , accessToken:'${accessToken}'}
+    })
+    window.dispatchEvent(event);
+  });
+ 
+  `;
 
 const INJECTED_SCRIPT = `
 const idToken = JSON.parse(window.localStorage.getItem('okta-token-storage')).idToken.value;

@@ -52,10 +52,10 @@ const App = () => {
       // console.log('state', state);
       setIsOpenpen(false);
       const details = {
-        client_id: '0oa54jk8kqn7DfAqV5d6',
+        client_id: '0oax5i0cxqetheoWi0h7',
         code_verifier:
           'M25iVXpKU3puUjFaYWg3T1NDTDQtcW1ROUY5YXlwalNoc0hhakxifmZHag',
-        redirect_uri: 'https://okta-cli-react-webapp.vercel.app',
+        redirect_uri: 'https://mol-dev.hesta.com.au/signin/callback.html',
         grant_type: 'authorization_code',
         code,
         state,
@@ -70,13 +70,16 @@ const App = () => {
           })
           .join('&');
 
-        fetch('https://dev-3976672.okta.com/oauth2/default/v1/token', {
-          method: 'post',
-          body: searchParams,
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+        fetch(
+          'https://hestadigital-id2.oktapreview.com/oauth2/ausm3k144qu6gPCyP0h7/v1/token',
+          {
+            method: 'post',
+            body: searchParams,
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+            },
           },
-        }).then((response) => {
+        ).then((response) => {
           response.json().then(async (res) => {
             // store tokens in keychain access
             await setAccessToken(res.access_token);
@@ -145,7 +148,7 @@ const App = () => {
 
         <ModalBrowser
           uri={
-            'https://dev-3976672.okta.com/oauth2/default/v1/authorize?client_id=0oa54jk8kqn7DfAqV5d6&response_type=code&scope=openid%20offline_access&redirect_uri=https://okta-cli-react-webapp.vercel.app&state=237c671a-29d7-11eb-adc1-0242ac120002&code_challenge_method=S256&code_challenge=qjrzSW9gMiUgpUvqgEPE4_-8swvyCtfOVvg55o5S_es'
+            'https://hestadigital-id2.oktapreview.com/oauth2/ausm3k144qu6gPCyP0h7/v1/authorize?client_id=0oax5i0cxqetheoWi0h7&response_type=code&scope=openid%20offline_access&redirect_uri=https://mol-dev.hesta.com.au/signin/callback.html&state=237c671a-29d7-11eb-adc1-0242ac120002&code_challenge_method=S256&code_challenge=qjrzSW9gMiUgpUvqgEPE4_-8swvyCtfOVvg55o5S_es'
           }
           // uri={'https://okta-cli-react-webapp.vercel.app'}
           isModalVisible={isOpen}
@@ -155,8 +158,8 @@ const App = () => {
         />
 
         <ModalBrowser
-          uri={'https://okta-cli-react-webapp.vercel.app/profile'}
-          // uri={'https://mol-dev.hesta.com.au'}
+          // uri={'https://okta-cli-react-webapp.vercel.app/profile'}
+          uri={'http://localhost:3000/'}
           isModalVisible={hasOpenPortal}
           toggleModal={togglePortalLink}
           idToken={idToken}
