@@ -156,10 +156,11 @@ const App = () => {
 
         <ModalBrowser
           uri={'https://okta-cli-react-webapp.vercel.app/profile'}
-          // uri={'https://oktapoc.herokuapp.com/dashboard'}
+          // uri={'https://mol-dev.hesta.com.au'}
           isModalVisible={hasOpenPortal}
           toggleModal={togglePortalLink}
           idToken={idToken}
+          accessToken={accessToken}
           onMessage={onMessage}
         />
 
