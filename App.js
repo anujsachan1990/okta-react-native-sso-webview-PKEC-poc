@@ -159,7 +159,8 @@ const App = () => {
 
         <ModalBrowser
           // uri={'https://okta-cli-react-webapp.vercel.app/profile'}
-          uri={'http://localhost:3000/'}
+          // uri={'http://localhost:3000/'}
+          uri={'http://localhost:8080/login'}
           isModalVisible={hasOpenPortal}
           toggleModal={togglePortalLink}
           idToken={idToken}

@@ -40,7 +40,66 @@ const injectTokenfunc = (idToken, accessToken) =>
       detail: { idToken: '${idToken}' , accessToken:'${accessToken}'}
     })
     window.dispatchEvent(event);
-  });
+   
+    var x = {
+      ...JSON.parse(sessionStorage.getItem('persist:MOL_STORAGE')),
+      ui: {
+        ...JSON.parse(JSON.parse(sessionStorage.getItem('persist:MOL_STORAGE')).ui),
+        authorization: {
+          accessToken: 'qdqwdq',
+          idToken: 'qdwqd',
+        },
+        memberIdentities: [
+          {
+            memberNumber: '4438884',
+            planCode: 'HS',
+            productName: 'HESTA Super',
+            status: 'Active',
+            planMemberId: '4438884',
+          },
+          {
+            memberNumber: '4438885',
+            planCode: 'HR',
+            productName: 'HESTA Transition to Retirement Income Stream',
+            status: 'Active',
+            planMemberId: '4438885',
+          },
+          {
+            memberNumber: '4438886',
+            planCode: 'HR',
+            productName: 'HESTA Term Allocated Pension',
+            status: 'Active',
+            planMemberId: '4438886',
+          },
+          {
+            defaultAccount: true,
+            memberNumber: '4438887',
+            planCode: 'HR',
+            productName: 'HESTA Retirement Income Stream',
+            status: 'Inactive',
+            planMemberId: '4438887',
+          },
+        ],
+        memberIdentity: {
+          defaultAccount: true,
+          memberNumber: '4438887',
+          planCode: 'HR',
+          productName: 'HESTA Retirement Income Stream',
+          status: 'Inactive',
+          planMemberId: '4438887',
+        },
+      },
+    };
+    
+    var z = {
+       ...x,
+       ui: JSON.stringify(x.ui),
+    };
+    
+    sessionStorage.setItem('persist:MOL_STORAGE', JSON.stringify(z));
+    window.location = "/dashboard"
+
+  },4000);
  
   `;
 
